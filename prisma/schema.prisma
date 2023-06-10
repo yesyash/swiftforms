@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum form_field_type {
+  Text_PlainText
+  Text_Textarea
+  Text_Protected
+  Text_Email
+  Text_PhoneNumber
+  Text_CardNumber
+  Date_DatePicker
+  Date_Timeslot
+  FileUpload_Image
+  FileUpload_PDF
+  Checkbox
+  Radio
+  Select
+  MultiSelect
+}
+
+model forms {
+  id               Int                @id @default(autoincrement())
+  title            String
+  form_fields      form_fields[]
+  form_submissions form_submissions[]
+  is_public        Boolean            @default(true)
+  created_at       DateTime
+  updated_at       DateTime
+}
+
+model form_fields {
+  id                 Int                  @id @default(autoincrement())
+  form_id            Int
+  title              String
+  type               form_field_type
+  is_required        Boolean              @default(false)
+  form               forms                @relation(fields: [form_id], references: [id])
+  form_field_options form_field_options[]
+  created_at         DateTime
+  updated_at         DateTime
+}
+
+model form_field_options {
+  id                            Int                             @id @default(autoincrement())
+  form_field_id                 Int
+  value                         String
+  form_field                    form_fields                     @relation(fields: [form_field_id], references: [id])
+  form_submission_field_options form_submission_field_options[]
+}
+
+model form_submissions {
+  id                     Int                      @id @default(autoincrement())
+  form_id                Int
+  form                   forms                    @relation(fields: [form_id], references: [id])
+  form_submission_fields form_submission_fields[]
+}
+
+model form_submission_fields {
+  id                            Int                             @id @default(autoincrement())
+  submission_id                 Int
+  input_value                   String
+  submission                    form_submissions                @relation(fields: [submission_id], references: [id])
+  form_submission_field_options form_submission_field_options[]
+}
+
+model form_submission_field_options {
+  id                   Int                    @id @default(autoincrement())
+  submission_field_id  Int
+  form_field_option_id Int
+  submission_field     form_submission_fields @relation(fields: [submission_field_id], references: [id])
+  form_field_option    form_field_options     @relation(fields: [form_field_option_id], references: [id])
+}
