@@ -1,13 +1,9 @@
-import { getServerSession } from "next-auth";
-
 import AuthButton from "@/components/auth-button";
-
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { useSessionServer } from "@/lib/userSessionServer";
 
 export default async function Home() {
-	// access session in server components using getServerSession
-	const session = await getServerSession(authOptions);
-	const user = session?.user;
+	// access session in server components using a custom function: useSessionServer()
+	const user = await useSessionServer();
 
 	return (
 		<main className="text-center">
