@@ -1,6 +1,11 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
+"use client";
 
+import { Inter } from "next/font/google";
+
+import cn from "@/lib/cn";
+
+import "./globals.css";
+import { NextAuthProvider } from "./providers/next-auth-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -12,7 +17,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<body className={inter.className}>{children}</body>
+			<body className={cn(inter.className, "flex h-screen w-screen items-center justify-center")}>
+				<NextAuthProvider>{children}</NextAuthProvider>
+			</body>
 		</html>
 	);
 }
