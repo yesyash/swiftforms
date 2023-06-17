@@ -1,4 +1,7 @@
+import prisma from "@/lib/prisma";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { Session } from "next-auth";
+import { Adapter } from "next-auth/adapters";
 import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -10,6 +13,7 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
 
 export type TCustomSession = Session & { user: { id: string | undefined } };
 export const authOptions = {
+	adapter: PrismaAdapter(prisma) as Adapter,
 	providers: [
 		GoogleProvider({
 			clientId: process.env.GOOGLE_CLIENT_ID,
