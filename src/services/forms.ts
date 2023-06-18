@@ -15,7 +15,7 @@ export const getForms = async (userId: string) => {
 export const createForm = async (userId: string) => {
 	await prisma.forms.create({
 		data: {
-			title: "Form 2",
+			title: `Form ${Date.now()}`,
 			user: {
 				connect: {
 					id: userId,
