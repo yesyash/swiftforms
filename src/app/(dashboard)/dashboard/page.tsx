@@ -1,4 +1,5 @@
 import CreateFormButton from "@/components/create-form-button";
+import DeleteFormButton from "@/components/delete-form-button";
 import { useSessionServer } from "@/lib/userSessionServer";
 import { getForms } from "@/services/forms";
 import { redirect } from "next/navigation";
@@ -26,8 +27,12 @@ const DashboardPage = async () => {
 				<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
 					{forms.length > 0 ? (
 						forms.map((form) => (
-							<div key={form.id} className="rounded-lg border border-zinc-300 p-4">
+							<div
+								key={form.id}
+								className="flex items-center justify-between rounded-lg border border-zinc-300 p-4"
+							>
 								<h3 className="font-medium">{form.title}</h3>
+								<DeleteFormButton formId={form.id} />
 							</div>
 						))
 					) : (
