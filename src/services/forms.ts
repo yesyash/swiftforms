@@ -26,3 +26,22 @@ export const createForm = async (userId: string) => {
 		},
 	});
 };
+
+// Deletes a form with given id
+export const deleteForm = async (formId: number, userId: string) => {
+	const form = await prisma.forms.findUnique({
+		where: {
+			id: formId,
+		},
+	});
+
+	if (form?.userId !== userId) {
+		throw new Error("Unauthorized");
+	}
+
+	await prisma.forms.delete({
+		where: {
+			id: formId,
+		},
+	});
+};
